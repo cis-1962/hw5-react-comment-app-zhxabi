@@ -1,3 +1,108 @@
+import React, { useState, useEffect } from 'react';
+import Posts from "./posts";
+
+
+const post1 : Post  = {
+  name: '1',
+  comment: '11',
+  children: [
+    {
+      name: '2',
+      comment: '222',
+      children: []
+    }
+  ]
+}
+
+const post2 : Post  = {
+  name: 'ss',
+  comment: 'sssss',
+  children: [
+    {
+      name: 'sdf',
+      comment: 'dfs',
+      children: [{
+        name: '333',
+        comment: 'd3333fs',
+        children: []
+      }]
+    }
+  ]
+}
+
+const testPosts : Post[] = [post1, post2]
+const allPosts : Post[] = []
+
 export default function App() {
-  return <main>Hello World!</main>;
+  const [commentInput, changeCommentInput] = useState('');
+  const [nameInput, changeNameInput] = useState('');
+  const [submitBtn, setSubmitBtn] = useState(false);
+  const [isDisabled, setDisabled] = useState(false);
+  const [currPosts, setCurrPosts] = useState(testPosts);
+
+  useEffect(() => {
+    // const isDisabled = (nameInput.length + commentInput.length) === 0
+    setDisabled(nameInput.length === 0 || commentInput.length === 0)
+  }, [commentInput, nameInput]);
+  
+  useEffect(() => {
+    if(submitBtn){
+      const newPosts = currPosts;
+      const currPost : Post = {
+        name: nameInput,
+        comment: commentInput,
+        children: []
+      };
+      newPosts.push(currPost);
+      setCurrPosts(newPosts)
+      changeNameInput("");
+      changeCommentInput("");
+      setSubmitBtn(false);
+    }
+  }, [commentInput, currPosts, nameInput, submitBtn]);
+
+  return (
+    <main>
+      <div className="container">
+      <div>
+        <form className="d-flex flex-column mx-4 my-4">
+          <input
+            type="text"
+            value={nameInput}
+            onChange={(e) => changeNameInput(e.target.value)}
+            placeholder="Name"
+            className='w-full py-1 my-1'
+          />
+          <textarea
+            value={commentInput}
+            onChange={(e) => changeCommentInput(e.target.value)}
+            placeholder="Comment"
+            className='w-full py-1 my-2'
+          />
+          <div className="d-flex flex-row">
+          <button 
+            type="button" 
+            onClick={() => setSubmitBtn(true)} 
+            disabled={isDisabled}
+            className='btn btn-info'
+          >
+            Submit
+          </button>
+          </div>
+        </form>
+        </div>
+       
+        <div>
+        {currPosts?.map((p) => (
+              <Posts
+                depth={3}
+                post={p}
+              />
+            ))}
+        </div>
+      </div>
+    </main>
+  
+  );
+
 }
