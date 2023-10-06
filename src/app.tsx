@@ -1,36 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Posts from "./posts";
 
-
-const post1 : Post  = {
-  name: '1',
-  comment: '11',
-  children: [
-    {
-      name: '2',
-      comment: '222',
-      children: []
-    }
-  ]
-}
-
-const post2 : Post  = {
-  name: 'ss',
-  comment: 'sssss',
-  children: [
-    {
-      name: 'sdf',
-      comment: 'dfs',
-      children: [{
-        name: '333',
-        comment: 'd3333fs',
-        children: []
-      }]
-    }
-  ]
-}
-
-const testPosts : Post[] = [post1, post2]
 const allPosts : Post[] = []
 
 export default function App() {
@@ -38,7 +8,7 @@ export default function App() {
   const [nameInput, changeNameInput] = useState('');
   const [submitBtn, setSubmitBtn] = useState(false);
   const [isDisabled, setDisabled] = useState(false);
-  const [currPosts, setCurrPosts] = useState(testPosts);
+  const [currPosts, setCurrPosts] = useState(allPosts);
 
   useEffect(() => {
     // const isDisabled = (nameInput.length + commentInput.length) === 0
